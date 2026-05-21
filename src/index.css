@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Rubik', sans-serif;
+    background-color: #090E18;
+    color: #ffffff;
+    line-height: 1.6;
+  }
+}
+
+@layer utilities {
+  .gradient-primary {
+    background: linear-gradient(135deg, #00B4A6 0%, #007a74 100%);
+  }
+
+  .gradient-hero {
+    background: radial-gradient(ellipse at top, #0d2a28 0%, #090E18 60%);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #00B4A6, #FFAB40);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 30px rgba(0, 180, 166, 0.3);
+  }
+
+  .border-subtle {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
