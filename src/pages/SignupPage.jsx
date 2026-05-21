@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, User, Phone, Chrome } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Phone, Globe } from 'lucide-react';
 import Navbar from '../components/Navbar';
 
 export default function SignupPage() {
@@ -53,7 +53,7 @@ export default function SignupPage() {
               type="button"
               className="w-full flex items-center justify-center gap-3 bg-elevated border-subtle rounded-xl py-3 text-sm text-white font-medium hover:bg-elevated/70 transition-colors mb-6"
             >
-              <Chrome size={18} className="text-primary" />
+              <Globe size={18} className="text-primary" />
               Continue with Google
             </button>
 

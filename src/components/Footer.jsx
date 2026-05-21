@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Bot, Github, Twitter, Linkedin } from 'lucide-react';
+import { Code2, X, Globe } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -50,13 +50,13 @@ export default function Footer() {
         <p className="text-muted text-xs">&copy; {new Date().getFullYear()} Kaam Karao. All rights reserved.</p>
         <div className="flex items-center gap-4">
           <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-white transition-colors">
-            <Github size={16} />
+            <Code2 size={16} />
           </a>
           <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-white transition-colors">
-            <Twitter size={16} />
+            <X size={16} />
           </a>
           <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-white transition-colors">
-            <Linkedin size={16} />
+            <Globe size={16} />
           </a>
         </div>
       </div>
