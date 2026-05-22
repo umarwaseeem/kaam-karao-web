@@ -164,7 +164,7 @@ export default function LandingPage() {
       </section>
 
       {/* ════════ CHAT DEMO ════════ */}
-      <section className="py-28 px-6">
+      <section id="features" className="py-28 px-6">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
             variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}
