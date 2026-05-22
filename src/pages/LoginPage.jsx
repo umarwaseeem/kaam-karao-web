@@ -1,133 +1,126 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, Globe } from 'lucide-react';
-import Navbar from '../components/Navbar';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { motion } from 'framer-motion';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+import { Button, TextField, Divider } from '../components/ui/index.jsx';
+import { LanguageSwitcherButton } from '../components/LanguageSwitcherButton.jsx';
+import { renderGoogleButton } from '../lib/googleAuth.js';
+import { ApiError } from '../lib/apiClient.js';
 
 export default function LoginPage() {
+  const { login, loginWithGoogle, isLoggedIn } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPwd, setShowPwd] = useState(false);
-  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const googleBtnRef = useRef(null);
 
-  const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+  useEffect(() => {
+    if (isLoggedIn) navigate(params.get('next') ?? '/app/dashboard', { replace: true });
+  }, [isLoggedIn, navigate, params]);
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (!form.email || !form.password) {
-      setError('Please enter your email and password.');
-      return;
+  useEffect(() => {
+    const loadGoogle = () => {
+      renderGoogleButton('google-btn-login', {
+        callback: async ({ credential }) => {
+          try {
+            await loginWithGoogle({ idToken: credential });
+            navigate(params.get('next') ?? '/app/dashboard', { replace: true });
+          } catch (e) {
+            toast.error(e instanceof ApiError ? e.message : t('login_failed'));
+          }
+        },
+        width: googleBtnRef.current?.offsetWidth ?? 320,
+      });
+    };
+    if (window.google?.accounts?.id) loadGoogle();
+    else window.addEventListener('google-loaded', loadGoogle);
+    return () => window.removeEventListener('google-loaded', loadGoogle);
+  }, [loginWithGoogle, navigate, params, t]);
+
+  const validate = () => {
+    const e = {};
+    if (!form.email) e.email = 'Required';
+    if (!form.password) e.password = 'Required';
+    setErrors(e);
+    return !Object.keys(e).length;
+  };
+
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    if (!validate()) return;
+    setLoading(true);
+    try {
+      await login({ email: form.email, password: form.password });
+      navigate(params.get('next') ?? '/app/dashboard', { replace: true });
+    } catch (e) {
+      toast.error(e instanceof ApiError ? e.message : t('login_failed'));
+    } finally {
+      setLoading(false);
     }
-    setError('');
-    // Placeholder — integrate with your backend
-    alert('Login submitted (backend not wired yet)');
   };
 
   return (
-    <div className="min-h-screen font-rubik">
-      <Navbar />
+    <div className="min-h-screen bg-bg flex items-center justify-center px-5 py-10">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}
+        className="w-full max-w-md"
+      >
+        <div className="flex justify-end mb-4"><LanguageSwitcherButton /></div>
 
-      <div className="flex items-center justify-center min-h-screen px-6 pt-20 pb-10">
-        <div className="w-full max-w-md">
-          {/* Card */}
-          <div className="bg-surface border-subtle rounded-2xl p-8">
-            {/* Logo mark */}
-            <div className="flex flex-col items-center mb-8">
-              <div className="w-14 h-14 rounded-2xl gradient-primary glow-primary flex items-center justify-center mb-4">
-                <span className="text-white font-bold text-2xl">K</span>
-              </div>
-              <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-              <p className="text-muted text-sm mt-1">Sign in to your Kaam Karao account</p>
-            </div>
-
-            {/* Google */}
-            <button
-              type="button"
-              className="w-full flex items-center justify-center gap-3 bg-elevated border-subtle rounded-xl py-3 text-sm text-white font-medium hover:bg-elevated/70 transition-colors mb-6"
-            >
-              <Globe size={18} className="text-primary" />
-              Continue with Google
-            </button>
-
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex-1 h-px bg-white/[0.08]" />
-              <span className="text-muted text-xs">or continue with email</span>
-              <div className="flex-1 h-px bg-white/[0.08]" />
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-medium text-white mb-1.5" htmlFor="email">
-                  Email
-                </label>
-                <div className="relative">
-                  <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="you@example.com"
-                    className="w-full bg-elevated border border-white/[0.08] focus:border-primary rounded-xl py-3 pl-10 pr-4 text-sm text-white placeholder-muted outline-none transition-colors"
-                  />
-                </div>
-              </div>
-
-              {/* Password */}
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-sm font-medium text-white" htmlFor="password">
-                    Password
-                  </label>
-                  <a href="#" className="text-xs text-primary hover:underline">Forgot password?</a>
-                </div>
-                <div className="relative">
-                  <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
-                  <input
-                    id="password"
-                    name="password"
-                    type={showPwd ? 'text' : 'password'}
-                    autoComplete="current-password"
-                    value={form.password}
-                    onChange={handleChange}
-                    placeholder="••••••••"
-                    className="w-full bg-elevated border border-white/[0.08] focus:border-primary rounded-xl py-3 pl-10 pr-10 text-sm text-white placeholder-muted outline-none transition-colors"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPwd(v => !v)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted hover:text-white transition-colors"
-                    aria-label="Toggle password visibility"
-                  >
-                    {showPwd ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-              </div>
-
-              {error && (
-                <p className="text-error text-xs">{error}</p>
-              )}
-
-              <button
-                type="submit"
-                className="w-full gradient-primary text-white font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity text-sm mt-2"
-              >
-                Log in
-              </button>
-            </form>
-
-            <p className="text-center text-sm text-muted mt-6">
-              Don&apos;t have an account?{' '}
-              <Link to="/signup" className="text-primary hover:underline font-medium">
-                Sign up
-              </Link>
-            </p>
+        <div className="bg-surface border-subtle rounded-2xl p-8">
+          {/* Logo */}
+          <div className="flex flex-col items-center mb-8">
+            <Link to="/" className="w-14 h-14 rounded-2xl gradient-primary glow-primary flex items-center justify-center mb-4">
+              <span className="text-white font-bold text-2xl">K</span>
+            </Link>
+            <h1 className="text-2xl font-bold text-on-bg">{t('welcome_back')}</h1>
+            <p className="text-muted text-sm mt-1">{t('login_subtitle')}</p>
           </div>
+
+          {/* Google button */}
+          <div ref={googleBtnRef} id="google-btn-login" className="flex justify-center mb-5" />
+
+          <Divider label={t('or_email')} className="mb-5" />
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <TextField
+              label={t('email')} icon={Mail} type="email" autoComplete="email"
+              placeholder="you@example.com" value={form.email} error={errors.email}
+              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+            />
+            <div className="relative">
+              <TextField
+                label={t('password')} icon={Lock}
+                type={showPwd ? 'text' : 'password'} autoComplete="current-password"
+                placeholder="••••••••" value={form.password} error={errors.password}
+                onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+                containerClass="w-full"
+              />
+              <button type="button" onClick={() => setShowPwd((v) => !v)}
+                className="absolute right-3 top-[34px] text-muted hover:text-on-bg transition-colors"
+                aria-label="Toggle password">
+                {showPwd ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
+            <div className="flex justify-end">
+              <a href="#" className="text-xs text-primary hover:underline">{t('forgot_password')}</a>
+            </div>
+            <Button type="submit" className="w-full mt-1" loading={loading}>{t('log_in')}</Button>
+          </form>
+
+          <p className="text-center text-sm text-muted mt-6">
+            {t('no_account')}{' '}
+            <Link to="/signup" className="text-primary hover:underline font-medium">{t('sign_up')}</Link>
+          </p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

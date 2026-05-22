@@ -2,33 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    font-family: 'Rubik', sans-serif;
-    background-color: #090E18;
-    color: #ffffff;
-    line-height: 1.6;
-  }
+/* ── Theme CSS variables ──────────────────────────────── */
+:root {
+  --color-bg: #090E18;
+  --color-surface: #161B22;
+  --color-elevated: #1F2937;
+  --color-on-bg: #ffffff;
+  --color-muted: #8B949E;
+  --color-border: rgba(255,255,255,0.08);
+  --color-error: #F97583;
 }
 
-@layer utilities {
-  .gradient-primary {
-    background: linear-gradient(135deg, #00B4A6 0%, #007a74 100%);
-  }
+.light {
+  --color-bg: #F5F7FA;
+  --color-surface: #FFFFFF;
+  --color-elevated: #EDF0F4;
+  --color-on-bg: #0D1117;
+  --color-muted: #57606A;
+  --color-border: #D0D7DE;
+  --color-error: #CF222E;
+}
 
-  .gradient-hero {
-    background: radial-gradient(ellipse at top, #0d2a28 0%, #090E18 60%);
+/* ── Base reset ───────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Rubik', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-on-bg);
+    line-height: 1.6;
+    transition: background-color 0.2s, color 0.2s;
   }
+  /* RTL support for Urdu */
+  [dir="rtl"] { font-family: 'Rubik', sans-serif; }
+}
+
+/* ── Utility classes ──────────────────────────────────── */
+@layer utilities {
+  .gradient-primary { background: linear-gradient(135deg, #00B4A6 0%, #007a74 100%); }
+  .gradient-hero    { background: radial-gradient(ellipse at top, #0d2a28 0%, #090E18 60%); }
+  .light .gradient-hero { background: radial-gradient(ellipse at top, #e0f5f4 0%, #F5F7FA 60%); }
 
   .text-gradient {
     background: linear-gradient(135deg, #00B4A6, #FFAB40);
@@ -36,12 +50,20 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  .glow-primary { box-shadow: 0 0 30px rgba(0,180,166,0.25); }
+  .border-subtle { border: 1px solid var(--color-border); }
 
-  .glow-primary {
-    box-shadow: 0 0 30px rgba(0, 180, 166, 0.3);
-  }
+  /* Scrollbar */
+  .scrollbar-thin { scrollbar-width: thin; scrollbar-color: #1F2937 transparent; }
+  .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: #1F2937; border-radius: 4px; }
 
-  .border-subtle {
-    border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Skeleton shimmer */
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-elevated) 50%, var(--color-surface) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
   }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 }
