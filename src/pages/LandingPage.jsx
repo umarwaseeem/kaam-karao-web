@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ArrowRight, CheckCircle, Zap, Star, MessageCircle,
+  ArrowRight, CheckCircle, Zap, Star, MessageCircle, Smartphone,
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -85,6 +85,17 @@ export default function LandingPage() {
                 >
                   {t('hero_cta_signin')}
                 </Link>
+              </motion.div>
+
+              <motion.div variants={fadeUp}>
+                <a
+                  href="https://github.com/umarwaseeem/kaam-karao-frontend/releases/download/MVP/app-release.apk"
+                  download
+                  className="inline-flex items-center gap-2 text-sm text-muted hover:text-on-bg border border-[var(--color-border)] hover:border-primary/40 bg-elevated px-5 py-2.5 rounded-xl transition-colors"
+                >
+                  <Smartphone size={15} className="text-primary" />
+                  Download Android App
+                </a>
               </motion.div>
 
               <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 pt-2">
