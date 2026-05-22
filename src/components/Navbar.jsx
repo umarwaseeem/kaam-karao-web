@@ -17,9 +17,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-            <span className="text-white font-bold text-sm">K</span>
-          </div>
+          <img src="/logo.png" alt="Kaam Karao" className="w-8 h-8 object-contain" />
           <span className="font-bold text-white text-lg">Kaam Karao</span>
         </Link>
 

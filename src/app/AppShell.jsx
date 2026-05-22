@@ -71,9 +71,7 @@ export default function AppShell() {
           className="flex items-center gap-2 px-3 mb-6 cursor-pointer"
           onClick={() => navigate('/app/dashboard')}
         >
-          <div className="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-sm">K</span>
-          </div>
+          <img src="/logo.png" alt="Kaam Karao" className="w-9 h-9 object-contain flex-shrink-0" />
           <span className="hidden lg:block font-bold text-on-bg text-lg">Kaam Karao</span>
         </div>
 
@@ -103,9 +101,7 @@ export default function AppShell() {
         {/* Mobile top bar */}
         <header className="md:hidden flex items-center justify-between px-4 h-14 bg-surface border-b border-[var(--color-border)] flex-shrink-0">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg gradient-primary flex items-center justify-center">
-              <span className="text-white font-bold text-xs">K</span>
-            </div>
+            <img src="/logo.png" alt="Kaam Karao" className="w-7 h-7 object-contain" />
             <span className="font-bold text-on-bg">Kaam Karao</span>
           </div>
           <div className="flex items-center gap-1">

@@ -87,8 +87,8 @@ export default function SignupPage() {
         <div className="flex justify-end mb-4"><LanguageSwitcherButton /></div>
         <div className="bg-surface border-subtle rounded-2xl p-8">
           <div className="flex flex-col items-center mb-8">
-            <Link to="/" className="w-14 h-14 rounded-2xl gradient-primary glow-primary flex items-center justify-center mb-4">
-              <span className="text-white font-bold text-2xl">K</span>
+            <Link to="/" className="mb-4 block">
+              <img src="/logo.png" alt="Kaam Karao" className="w-16 h-16 object-contain" />
             </Link>
             <h1 className="text-2xl font-bold text-on-bg">{t('sign_up')}</h1>
             <p className="text-muted text-sm mt-1">{t('signup_subtitle')}</p>
