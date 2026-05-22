@@ -229,13 +229,13 @@ export default function LandingPage() {
             variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}
             className="grid grid-cols-2 sm:grid-cols-3 gap-4"
           >
-            {SERVICES.map(({ label, emoji, color }) => (
+            {SERVICE_KEYS.map(({ key, emoji, color }) => (
               <motion.div
-                key={label} variants={fadeUp}
+                key={key} variants={fadeUp}
                 className={`bg-gradient-to-br ${color} border border-white/[0.06] rounded-2xl p-6 flex flex-col items-start gap-3 hover:scale-[1.02] transition-transform cursor-default`}
               >
                 <span className="text-3xl">{emoji}</span>
-                <span className="text-sm font-semibold text-on-bg">{label}</span>
+                <span className="text-sm font-semibold text-on-bg">{t(key)}</span>
               </motion.div>
             ))}
           </motion.div>
