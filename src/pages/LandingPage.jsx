@@ -24,6 +24,13 @@ const STEP_DESC_KEYS  = ['hiw_step1_desc',  'hiw_step2_desc',  'hiw_step3_desc']
 const FEAT_KEYS = ['feat_f1', 'feat_f2', 'feat_f3', 'feat_f4'];
 const TRUST_KEYS = ['hero_trust_1', 'hero_trust_2', 'hero_trust_3'];
 
+const CHAT_MESSAGES = [
+  { user: true,  text: 'Mujhe kal subah 10 baje plumber chahiye, leakage hai' },
+  { user: false, text: 'Got it! Finding verified plumbers near you…' },
+  { user: false, text: '✅ Found 3 providers. Best match: **Tariq Plumbing** — ⭐ 4.8 · 1.2 km · Rs. 500–800' },
+  { user: false, text: '📅 Booking confirmed for tomorrow 10:00 AM. Reminder scheduled.' },
+];
+
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
 const fadeUp  = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 
