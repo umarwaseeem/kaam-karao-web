@@ -2,15 +2,17 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { LanguageSwitcherButton } from './LanguageSwitcherButton.jsx';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const { t } = useLanguage();
 
   const links = [
-    { to: '#features', label: 'Features' },
-    { to: '#how-it-works', label: 'How it works' },
-    { to: '#services', label: 'Services' },
+    { to: '#features',    labelKey: 'nav_features' },
+    { to: '#how-it-works', labelKey: 'nav_how_it_works' },
+    { to: '#services',    labelKey: 'nav_services' },
   ];
 
   return (
@@ -31,7 +33,7 @@ export default function Navbar() {
                 href={l.to}
                 className="text-muted hover:text-white text-sm transition-colors"
               >
-                {l.label}
+                {t(l.labelKey)}
               </a>
             ))}
           </div>
@@ -44,13 +46,13 @@ export default function Navbar() {
             to="/login"
             className="text-sm text-muted hover:text-white transition-colors px-4 py-2"
           >
-            Log in
+            {t('nav_log_in')}
           </Link>
           <Link
             to="/signup"
             className="text-sm bg-primary hover:bg-primary/90 text-white font-medium px-4 py-2 rounded-lg transition-colors"
           >
-            Get started
+            {t('nav_get_started')}
           </Link>
         </div>
 
@@ -74,20 +76,20 @@ export default function Navbar() {
               className="text-muted hover:text-white text-sm transition-colors"
               onClick={() => setOpen(false)}
             >
-              {l.label}
+              {t(l.labelKey)}
             </a>
           ))}
           <div className="flex flex-col gap-2 pt-2 border-t border-white/[0.06]">
             <div className="py-1"><LanguageSwitcherButton /></div>
             <Link to="/login" className="text-sm text-muted hover:text-white py-2" onClick={() => setOpen(false)}>
-              Log in
+              {t('nav_log_in')}
             </Link>
             <Link
               to="/signup"
               className="text-sm bg-primary text-white font-medium px-4 py-2 rounded-lg text-center"
               onClick={() => setOpen(false)}
             >
-              Get started
+              {t('nav_get_started')}
             </Link>
           </div>
         </div>

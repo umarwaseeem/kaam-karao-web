@@ -5,54 +5,31 @@ import {
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
 
-/* ── data ────────────────────────────────────────────────── */
-const SERVICES = [
-  { label: 'AC Technician', emoji: '❄️', color: 'from-cyan-500/20 to-teal-500/10' },
-  { label: 'Electrician',   emoji: '⚡', color: 'from-yellow-500/20 to-amber-500/10' },
-  { label: 'Plumber',       emoji: '🔧', color: 'from-blue-500/20 to-indigo-500/10' },
-  { label: 'Home Cleaner',  emoji: '🏠', color: 'from-green-500/20 to-emerald-500/10' },
-  { label: 'Tutor',         emoji: '📚', color: 'from-purple-500/20 to-violet-500/10' },
-  { label: 'Beautician',    emoji: '✨', color: 'from-pink-500/20 to-rose-500/10' },
+const SERVICE_KEYS = [
+  { key: 'ac_tech',     emoji: '❄️', color: 'from-cyan-500/20 to-teal-500/10' },
+  { key: 'electrician', emoji: '⚡', color: 'from-yellow-500/20 to-amber-500/10' },
+  { key: 'plumber',     emoji: '🔧', color: 'from-blue-500/20 to-indigo-500/10' },
+  { key: 'cleaner',     emoji: '🏠', color: 'from-green-500/20 to-emerald-500/10' },
+  { key: 'tutor',       emoji: '📚', color: 'from-purple-500/20 to-violet-500/10' },
+  { key: 'beautician',  emoji: '✨', color: 'from-pink-500/20 to-rose-500/10' },
 ];
 
-const CHAT_MESSAGES = [
-  { user: true,  text: 'Mujhe kal subah 10 baje plumber chahiye, leakage hai' },
-  { user: false, text: 'Got it! Finding verified plumbers near you…' },
-  { user: false, text: '✅ Found 3 providers. Best match: **Tariq Plumbing** — ⭐ 4.8 · 1.2 km · Rs. 500–800' },
-  { user: false, text: '📅 Booking confirmed for tomorrow 10:00 AM. Reminder scheduled.' },
-];
-
-const STATS = [
-  { value: '< 60s',   label: 'Avg. booking time' },
-  { value: '4.8★',    label: 'Provider rating' },
-  { value: '3 langs', label: 'Urdu · Roman · English' },
-  { value: '100%',    label: 'Free to use' },
-];
-
-const STEPS = [
-  {
-    title: 'Just say what you need',
-    desc: '"Mujhe kal subah plumber chahiye" — our AI understands Urdu, Roman Urdu, and English naturally.',
-    icon: MessageCircle,
-  },
-  {
-    title: 'AI finds the best match',
-    desc: 'We rank nearby verified providers by rating, distance, and availability — with clear reasoning.',
-    icon: Zap,
-  },
-  {
-    title: 'Confirmed in one tap',
-    desc: 'The provider is notified, a reminder is scheduled, and you get full booking details instantly.',
-    icon: CheckCircle,
-  },
-];
+const STAT_VALUES = ['< 60s', '4.8★', '3 langs', '100%'];
+const STAT_LABEL_KEYS = ['stat_label_1', 'stat_label_2', 'stat_label_3', 'stat_label_4'];
+const STEP_ICONS = [MessageCircle, Zap, CheckCircle];
+const STEP_TITLE_KEYS = ['hiw_step1_title', 'hiw_step2_title', 'hiw_step3_title'];
+const STEP_DESC_KEYS  = ['hiw_step1_desc',  'hiw_step2_desc',  'hiw_step3_desc'];
+const FEAT_KEYS = ['feat_f1', 'feat_f2', 'feat_f3', 'feat_f4'];
+const TRUST_KEYS = ['hero_trust_1', 'hero_trust_2', 'hero_trust_3'];
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
 const fadeUp  = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 
 /* ── component ───────────────────────────────────────────── */
 export default function LandingPage() {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen font-rubik bg-bg text-on-bg overflow-x-hidden">
       <Navbar />
@@ -72,20 +49,20 @@ export default function LandingPage() {
               <motion.div variants={fadeUp}>
                 <span className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary text-xs font-medium px-3.5 py-1.5 rounded-full">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  AI-powered service booking for Pakistan
+                  {t('hero_badge')}
                 </span>
               </motion.div>
 
               <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
-                Book any
+                {t('hero_h1_1')}
                 <br />
-                <span className="text-gradient">home service</span>
+                <span className="text-gradient">{t('hero_h1_2')}</span>
                 <br />
-                in seconds.
+                {t('hero_h1_3')}
               </motion.h1>
 
               <motion.p variants={fadeUp} className="text-muted text-lg md:text-xl leading-relaxed max-w-lg">
-                Just tell Kaam Karao what you need — in Urdu, Roman Urdu, or English. Our AI finds, ranks, and books a trusted local provider for you instantly.
+                {t('hero_body')}
               </motion.p>
 
               <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3">
@@ -93,20 +70,20 @@ export default function LandingPage() {
                   to="/signup"
                   className="inline-flex items-center justify-center gap-2 gradient-primary glow-primary text-white font-semibold px-7 py-3.5 rounded-xl hover:opacity-90 transition-opacity text-sm"
                 >
-                  Get started — it&apos;s free <ArrowRight size={15} />
+                  {t('hero_cta_start')} <ArrowRight size={15} />
                 </Link>
                 <Link
                   to="/login"
                   className="inline-flex items-center justify-center gap-2 bg-elevated border border-[var(--color-border)] text-on-bg font-medium px-7 py-3.5 rounded-xl hover:bg-surface transition-colors text-sm"
                 >
-                  Sign in
+                  {t('hero_cta_signin')}
                 </Link>
               </motion.div>
 
               <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 pt-2">
-                {['No setup needed', 'Urdu & English', 'Instant confirmation'].map((tag) => (
-                  <span key={tag} className="flex items-center gap-1.5 text-xs text-muted">
-                    <CheckCircle size={13} className="text-primary" /> {tag}
+                {TRUST_KEYS.map((key) => (
+                  <span key={key} className="flex items-center gap-1.5 text-xs text-muted">
+                    <CheckCircle size={13} className="text-primary" /> {t(key)}
                   </span>
                 ))}
               </motion.div>
@@ -154,10 +131,10 @@ export default function LandingPage() {
           variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}
           className="max-w-4xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8"
         >
-          {STATS.map(({ value, label }) => (
-            <motion.div key={label} variants={fadeUp} className="text-center">
+          {STAT_VALUES.map((value, i) => (
+            <motion.div key={i} variants={fadeUp} className="text-center">
               <p className="text-2xl font-bold text-gradient">{value}</p>
-              <p className="text-xs text-muted mt-1">{label}</p>
+              <p className="text-xs text-muted mt-1">{t(STAT_LABEL_KEYS[i])}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -170,22 +147,17 @@ export default function LandingPage() {
             variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}
             className="order-2 lg:order-1 flex flex-col gap-5"
           >
-            <motion.span variants={fadeUp} className="text-primary text-xs font-semibold uppercase tracking-widest">Conversational AI</motion.span>
+            <motion.span variants={fadeUp} className="text-primary text-xs font-semibold uppercase tracking-widest">{t('feat_label')}</motion.span>
             <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-bold leading-tight">
-              Just talk to it.<br />Like a real person.
+              {t('feat_h2')}
             </motion.h2>
             <motion.p variants={fadeUp} className="text-muted text-base leading-relaxed max-w-md">
-              No forms, no dropdowns. Type or speak in plain Urdu, Roman Urdu, or English — Kaam Karao handles the rest. It even understands slang.
+              {t('feat_body')}
             </motion.p>
             <motion.ul variants={stagger} className="flex flex-col gap-3">
-              {[
-                'Understands Urdu, Roman Urdu & English',
-                'Voice input — speak your request',
-                'Smart ranking by distance, rating & price',
-                'Auto-scheduled reminders',
-              ].map((item) => (
-                <motion.li key={item} variants={fadeUp} className="flex items-center gap-2.5 text-sm text-on-bg/80">
-                  <CheckCircle size={15} className="text-primary flex-shrink-0" /> {item}
+              {FEAT_KEYS.map((key) => (
+                <motion.li key={key} variants={fadeUp} className="flex items-center gap-2.5 text-sm text-on-bg/80">
+                  <CheckCircle size={15} className="text-primary flex-shrink-0" /> {t(key)}
                 </motion.li>
               ))}
             </motion.ul>
@@ -208,9 +180,9 @@ export default function LandingPage() {
             variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <motion.span variants={fadeUp} className="text-primary text-xs font-semibold uppercase tracking-widest">How it works</motion.span>
+            <motion.span variants={fadeUp} className="text-primary text-xs font-semibold uppercase tracking-widest">{t('hiw_label')}</motion.span>
             <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-bold mt-3">
-              From request to booked<br />in under a minute.
+              {t('hiw_h2')}
             </motion.h2>
           </motion.div>
 
@@ -219,8 +191,8 @@ export default function LandingPage() {
             className="grid md:grid-cols-3 gap-8 relative"
           >
             <div className="hidden md:block absolute top-8 left-[calc(16.7%)] right-[calc(16.7%)] h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-            {STEPS.map(({ title, desc, icon: Icon }, i) => (
-              <motion.div key={title} variants={fadeUp} className="flex flex-col items-center text-center gap-4">
+            {STEP_ICONS.map((Icon, i) => (
+              <motion.div key={i} variants={fadeUp} className="flex flex-col items-center text-center gap-4">
                 <div className="relative">
                   <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center shadow-lg shadow-primary/20">
                     <Icon size={26} className="text-white" />
@@ -229,8 +201,8 @@ export default function LandingPage() {
                     {i + 1}
                   </span>
                 </div>
-                <h3 className="font-semibold text-on-bg text-lg">{title}</h3>
-                <p className="text-muted text-sm leading-relaxed">{desc}</p>
+                <h3 className="font-semibold text-on-bg text-lg">{t(STEP_TITLE_KEYS[i])}</h3>
+                <p className="text-muted text-sm leading-relaxed">{t(STEP_DESC_KEYS[i])}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -244,12 +216,12 @@ export default function LandingPage() {
             variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <motion.span variants={fadeUp} className="text-primary text-xs font-semibold uppercase tracking-widest">What we cover</motion.span>
+            <motion.span variants={fadeUp} className="text-primary text-xs font-semibold uppercase tracking-widest">{t('services_label')}</motion.span>
             <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-bold mt-3 mb-4">
-              Every service you need,<br />right at your door.
+              {t('services_h2')}
             </motion.h2>
             <motion.p variants={fadeUp} className="text-muted max-w-md mx-auto text-base">
-              From emergency repairs to regular maintenance — Kaam Karao connects you to verified local providers.
+              {t('services_body')}
             </motion.p>
           </motion.div>
 
@@ -307,23 +279,23 @@ export default function LandingPage() {
         >
           <img src="/logo.png" alt="Kaam Karao" className="w-24 h-24 object-contain mx-auto mb-8 drop-shadow-xl" />
           <h2 className="text-4xl md:text-5xl font-bold mb-5 leading-tight">
-            Ready to get things done?
+            {t('cta_h2')}
           </h2>
           <p className="text-muted text-lg mb-10 max-w-md mx-auto">
-            Join thousands of users across Pakistan booking home services the smart way.
+            {t('cta_body')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/signup"
               className="inline-flex items-center justify-center gap-2 gradient-primary glow-primary text-white font-semibold px-8 py-4 rounded-xl hover:opacity-90 transition-opacity text-base"
             >
-              Create a free account <ArrowRight size={17} />
+              {t('cta_create_account')} <ArrowRight size={17} />
             </Link>
             <Link
               to="/login"
               className="inline-flex items-center justify-center gap-2 bg-elevated border border-[var(--color-border)] text-on-bg font-medium px-8 py-4 rounded-xl hover:bg-surface transition-colors text-base"
             >
-              Sign in
+              {t('hero_cta_signin')}
             </Link>
           </div>
         </motion.div>
